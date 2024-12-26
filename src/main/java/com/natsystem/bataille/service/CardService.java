@@ -6,6 +6,7 @@ import com.natsystem.bataille.model.Card;
 import com.natsystem.bataille.repository.CardRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -48,15 +49,22 @@ public class CardService {
         if (deck == null || deck.isEmpty()) {
             return null;
         }
-        return deck.get(0);
+        CardDTO drawCard = deck.get(0);
+        deck.remove(0);
+        return drawCard;
     }
 
     public List<CardDTO> drawTwoCards() {
         if (deck == null || deck.isEmpty()) {
             return Collections.emptyList();
         }
-        Collections.shuffle(deck);
-        return deck.subList(0, Math.min(2, deck.size()));
+
+        int numberOfCardsToDraw = Math.min(2, deck.size());
+        List<CardDTO> drawnCards = new ArrayList<>(deck.subList(0, numberOfCardsToDraw));
+
+        deck.subList(0, numberOfCardsToDraw).clear();
+
+        return drawnCards;
     }
 
     public List<CardDTO> filterCards(String suit, String value) {

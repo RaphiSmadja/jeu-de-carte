@@ -1,15 +1,33 @@
 <mat-toolbar color="primary">
   <span>Card Game</span>
   <span class="spacer"></span>
+  <!-- Menu d'actions -->
   <button mat-button (click)="fetchAllCards()">Reload Cards</button>
   <button mat-button (click)="shuffleDeck()">Shuffle Deck</button>
-  <button mat-button>Start Battle</button>
+  <button mat-button (click)="drawFirstCard()">Draw First Card</button>
+  <button mat-button (click)="drawTwoCards()">Draw Two Cards</button>
+  <button mat-button (click)="navigateTo('battle')">Start Battle</button>
 </mat-toolbar>
 
-<div *ngIf="loading" class="loading">Loading...</div>
+<!-- Contenu principal -->
+<div *ngIf="currentView === 'home'">
+  <div *ngIf="loading" class="loading">Loading...</div>
 
-<div *ngIf="!loading && cards.length > 0" class="card-container">
-  <app-card *ngFor="let card of cards" [card]="card"></app-card>
+  <div *ngIf="!loading && firstCard" class="first-card">
+    <h2>First Card:</h2>
+    <app-card [card]="firstCard"></app-card>
+  </div>
+
+  <div *ngIf="!loading && cards.length > 0" class="card-container">
+    <app-card *ngFor="let card of cards" [card]="card"></app-card>
+  </div>
+
+  <div *ngIf="!loading && cards.length === 0 && !firstCard">
+    No cards available.
+  </div>
 </div>
 
-<div *ngIf="!loading && cards.length === 0">No cards available.</div>
+<!-- Affichage de la bataille -->
+<div *ngIf="currentView === 'battle'">
+  <app-battle (battleComplete)="onBattleComplete()"></app-battle>
+</div>

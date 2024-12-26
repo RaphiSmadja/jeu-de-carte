@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Card } from '../models/Card';
+import { Card } from '../../models/Card';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 
@@ -11,9 +11,11 @@ import { CommonModule } from '@angular/common';
   styleUrl: './card.component.scss'
 })
 export class CardComponent {
-  @Input() card!: Card; // La carte à afficher
-
+  @Input() card: Card | null = null; // Autorise null ou undefined
   getSuitSymbol(): string {
+    if (!this.card || !this.card.suit) {
+      return ''; // Retourne une chaîne vide si la carte n'est pas définie
+    }
     switch (this.card.suit.toLowerCase()) {
       case 'heart':
         return '♥';
@@ -29,6 +31,9 @@ export class CardComponent {
   }
 
   getSuitClass(): string {
+    if (!this.card || !this.card.suit) {
+      return ''; // Retourne une chaîne vide si la carte n'est pas définie
+    }
     switch (this.card.suit.toLowerCase()) {
       case 'heart':
       case 'diamond':
@@ -42,6 +47,9 @@ export class CardComponent {
   }
 
   getValueAsNumber(): number {
+    if (!this.card || !this.card.suit) {
+      return 0;
+    }
     const mapping: { [key: string]: number } = {
       jack: 11,
       queen: 12,

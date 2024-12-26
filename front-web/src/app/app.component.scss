@@ -1,8 +1,27 @@
+.mat-toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
 .card-container {
-    display: flex; /* Active Flexbox */
-    flex-wrap: wrap; /* Permet le retour à la ligne si nécessaire */
-    justify-content: center; /* Aligne les cartes au centre */
-    gap: 10px; /* Ajoute de l'espace entre les cartes */
-    padding: 20px; /* Ajoute un espace autour du conteneur */
-  }
-  
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+}
+
+.loading {
+  text-align: center;
+  font-size: 1.5em;
+  color: #666;
+}
+
+.first-card {
+  margin: 20px auto;
+  text-align: center;
+}

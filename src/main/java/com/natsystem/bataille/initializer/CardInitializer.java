@@ -17,8 +17,8 @@ public class CardInitializer {
     @PostConstruct
     public void init() {
         if (cardRepository.count() == 0) {
-            String[] suits = {"trèfle", "carreau", "coeur", "pique"};
-            String[] values = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "Valet", "Reine", "Roi", "As"};
+            String[] suits = {"heart", "spade", "diamond", "club"};
+            String[] values = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace"};
 
             for (String suit : suits) {
                 for (String value : values) {

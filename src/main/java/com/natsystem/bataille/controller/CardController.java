@@ -28,7 +28,7 @@ public class CardController {
     @PostConstruct
     public void init() {
         logger.info("Initializing the deck of cards...");
-        cardService.loadDeck();
+        cardService.initializeDeck();
         logger.info("Deck initialized successfully.");
     }
 
@@ -39,9 +39,9 @@ public class CardController {
             @ApiResponse(responseCode = "400", description = "Invalid input parameter")
     })
     @GetMapping
-    public ResponseEntity<List<CardDTO>> getAllCards(@RequestParam(required = false) String suit) {
-        logger.info("Retrieving cards. Suit parameter: {}", suit);
-        List<CardDTO> cards = cardService.getAllCards(suit);
+    public ResponseEntity<List<CardDTO>> getAllCards() {
+        logger.info("Retrieving all cards");
+        List<CardDTO> cards = cardService.getAllCards();
         if (cards.isEmpty()) {
             logger.warn("No cards found.");
             return ResponseEntity.noContent().build();

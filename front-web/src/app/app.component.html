@@ -1,0 +1,15 @@
+<mat-toolbar color="primary">
+  <span>Card Game</span>
+  <span class="spacer"></span>
+  <button mat-button (click)="fetchAllCards()">Reload Cards</button>
+  <button mat-button (click)="shuffleDeck()">Shuffle Deck</button>
+  <button mat-button>Start Battle</button>
+</mat-toolbar>
+
+<div *ngIf="loading" class="loading">Loading...</div>
+
+<div *ngIf="!loading && cards.length > 0" class="card-container">
+  <app-card *ngFor="let card of cards" [card]="card"></app-card>
+</div>
+
+<div *ngIf="!loading && cards.length === 0">No cards available.</div>

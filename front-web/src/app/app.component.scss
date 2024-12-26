@@ -1,0 +1,8 @@
+.card-container {
+    display: flex; /* Active Flexbox */
+    flex-wrap: wrap; /* Permet le retour à la ligne si nécessaire */
+    justify-content: center; /* Aligne les cartes au centre */
+    gap: 10px; /* Ajoute de l'espace entre les cartes */
+    padding: 20px; /* Ajoute un espace autour du conteneur */
+  }
+  

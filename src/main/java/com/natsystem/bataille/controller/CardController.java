@@ -2,6 +2,9 @@ package com.natsystem.bataille.controller;
 
 import com.natsystem.bataille.dto.CardDTO;
 import com.natsystem.bataille.service.CardService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,63 +27,92 @@ public class CardController {
 
     @PostConstruct
     public void init() {
-        logger.info("Initialisation du deck de cartes...");
+        logger.info("Initializing the deck of cards...");
         cardService.loadDeck();
-        logger.info("Deck initialisé avec succès.");
+        logger.info("Deck initialized successfully.");
     }
 
+    @Operation(summary = "Get All Cards", description = "Retrieve the full deck of 52 cards")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of cards returned successfully"),
+            @ApiResponse(responseCode = "204", description = "No cards available"),
+            @ApiResponse(responseCode = "400", description = "Invalid input parameter")
+    })
     @GetMapping
     public ResponseEntity<List<CardDTO>> getAllCards(@RequestParam(required = false) String suit) {
-        logger.info("Récupération des cartes. Suit param: {}", suit);
+        logger.info("Retrieving cards. Suit parameter: {}", suit);
         List<CardDTO> cards = cardService.getAllCards(suit);
         if (cards.isEmpty()) {
-            logger.warn("Aucune carte trouvée.");
+            logger.warn("No cards found.");
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(cards);
     }
 
+    @Operation(summary = "Shuffle deck", description = "Shuffle the entire deck of cards")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Deck shuffled successfully")
+    })
     @PostMapping("/shuffle")
     public ResponseEntity<List<CardDTO>> shuffleDeck() {
-        logger.info("Mélange des cartes...");
+        logger.info("Shuffling the deck...");
         List<CardDTO> shuffledDeck = cardService.shuffleDeck();
-        logger.info("Deck mélangé avec succès.");
+        logger.info("Deck shuffled successfully.");
         return ResponseEntity.ok(shuffledDeck);
     }
 
+    @Operation(summary = "Get first card of deck", description = "Draw the first card from the deck")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "First card returned successfully"),
+            @ApiResponse(responseCode = "204", description = "No card available in the deck")
+    })
     @GetMapping("/first")
     public ResponseEntity<CardDTO> getFirstCard() {
-        logger.info("Récupération de la première carte du deck.");
+        logger.info("Retrieving the first card from the deck.");
         CardDTO firstCard = cardService.getFirstCard();
         if (firstCard == null) {
-            logger.warn("Aucune carte disponible dans le deck.");
+            logger.warn("No card available in the deck.");
             return ResponseEntity.noContent().build();
         }
-        logger.info("Première carte récupérée : {}", firstCard);
+        logger.info("First card retrieved: {}", firstCard);
         return ResponseEntity.ok(firstCard);
     }
 
+    @Operation(summary = "Get 2 cards of deck", description = "Draw 2 random cards from the deck")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "2 cards returned successfully"),
+            @ApiResponse(responseCode = "204", description = "Not enough cards available in the deck")
+    })
     @GetMapping("/draw/2")
     public ResponseEntity<List<CardDTO>> drawTwoCards() {
-        logger.info("Tirage de deux cartes aléatoires...");
+        logger.info("Drawing two random cards...");
         List<CardDTO> cards = cardService.drawTwoCards();
         if (cards.isEmpty()) {
-            logger.warn("Impossible de tirer deux cartes : le deck est vide.");
+            logger.warn("Cannot draw two cards: the deck is empty.");
             return ResponseEntity.noContent().build();
         }
-        logger.info("Deux cartes tirées : {}", cards);
+        logger.info("Two cards drawn: {}", cards);
         return ResponseEntity.ok(cards);
     }
 
+    @Operation(summary = "Get a list of cards by suit", description = "Filter the deck by suit")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Cards filtered by suit returned successfully"),
+            @ApiResponse(responseCode = "204", description = "No cards found for the specified suit")
+    })
     @GetMapping("/filter")
-    public ResponseEntity<List<CardDTO>> filterCardsBySuit(@RequestParam String suit) {
-        logger.info("Filtrage des cartes par couleur : {}", suit);
-        List<CardDTO> filteredCards = cardService.filterCardsBySuit(suit);
+    public ResponseEntity<List<CardDTO>> filterCards(
+            @RequestParam(required = false) String suit,
+            @RequestParam(required = false) String value) {
+        logger.info("Filtering cards. Suit: {}, Value: {}", suit, value);
+        List<CardDTO> filteredCards = cardService.filterCards(suit, value);
+
         if (filteredCards.isEmpty()) {
-            logger.warn("Aucune carte trouvée pour la couleur : {}", suit);
+            logger.warn("No cards found for the given criteria. Suit: {}, Value: {}", suit, value);
             return ResponseEntity.noContent().build();
         }
-        logger.info("{} cartes trouvées pour la couleur {}", filteredCards.size(), suit);
+        logger.info("{} cards found for the given criteria. Suit: {}, Value: {}", filteredCards.size(), suit, value);
         return ResponseEntity.ok(filteredCards);
     }
+
 }

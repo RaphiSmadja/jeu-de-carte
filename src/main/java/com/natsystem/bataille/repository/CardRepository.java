@@ -8,4 +8,8 @@ import java.util.List;
 @Repository
 public interface CardRepository extends JpaRepository<Card, Long> {
     List<Card> findBySuit(String suit);
+
+    List<Card> findBySuitAndValue(String suit, String value);
+
+    List<Card> findByValue(String value);
 }

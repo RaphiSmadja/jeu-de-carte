@@ -2,6 +2,7 @@ package com.natsystem.bataille.service;
 
 import com.natsystem.bataille.dto.CardDTO;
 import com.natsystem.bataille.mapper.CardMapper;
+import com.natsystem.bataille.model.Card;
 import com.natsystem.bataille.repository.CardRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ public class CardService {
     }
 
     public void loadDeck() {
+        List<Card> all = cardRepository.findAll();
         deck = cardMapper.toDTOList(cardRepository.findAll());
     }
 
@@ -32,6 +34,7 @@ public class CardService {
     }
 
     public List<CardDTO> shuffleDeck() {
+        System.out.println(deck);
         Collections.shuffle(deck);
         return deck;
     }
@@ -45,8 +48,20 @@ public class CardService {
         return deck.subList(0, Math.min(2, deck.size()));
     }
 
-    public List<CardDTO> filterCardsBySuit(String suit) {
-        return cardMapper.toDTOList(cardRepository.findBySuit(suit));
+    public List<CardDTO> filterCards(String suit, String value) {
+        List<Card> cards;
+
+        if (suit != null && value != null) {
+            cards = cardRepository.findBySuitAndValue(suit, value);
+        } else if (suit != null) {
+            cards = cardRepository.findBySuit(suit);
+        } else if (value != null) {
+            cards = cardRepository.findByValue(value);
+        } else {
+            cards = cardRepository.findAll();
+        }
+
+        return cardMapper.toDTOList(cards);
     }
 
 }

@@ -15,35 +15,46 @@ public class CardService {
     private final CardMapper cardMapper;
     private List<CardDTO> deck;
 
-
     public CardService(CardRepository cardRepository, CardMapper cardMapper) {
         this.cardRepository = cardRepository;
         this.cardMapper = cardMapper;
     }
 
-    public void loadDeck() {
-        List<Card> all = cardRepository.findAll();
+    public List<CardDTO> getAllCards() {
+        List<Card> cards = cardRepository.findAll();
+        return cardMapper.toDTOList(cards);
+    }
+
+    public void initializeDeck() {
         deck = cardMapper.toDTOList(cardRepository.findAll());
     }
 
-    public List<CardDTO> getAllCards(String suit) {
-        if (suit != null) {
-            return cardMapper.toDTOList(cardRepository.findBySuit(suit));
+    public List<CardDTO> getDeck() {
+        if (deck == null) {
+            throw new IllegalStateException("Deck not initialized. Call initializeDeck() first.");
         }
         return deck;
     }
 
     public List<CardDTO> shuffleDeck() {
-        System.out.println(deck);
+        if (deck == null) {
+            throw new IllegalStateException("Deck not initialized. Call initializeDeck() first.");
+        }
         Collections.shuffle(deck);
         return deck;
     }
 
     public CardDTO getFirstCard() {
-        return deck.isEmpty() ? null : deck.get(0);
+        if (deck == null || deck.isEmpty()) {
+            return null;
+        }
+        return deck.get(0);
     }
 
     public List<CardDTO> drawTwoCards() {
+        if (deck == null || deck.isEmpty()) {
+            return Collections.emptyList();
+        }
         Collections.shuffle(deck);
         return deck.subList(0, Math.min(2, deck.size()));
     }
@@ -63,5 +74,4 @@ public class CardService {
 
         return cardMapper.toDTOList(cards);
     }
-
 }

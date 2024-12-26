@@ -23,6 +23,7 @@ public class CardService {
 
     public List<CardDTO> getAllCards() {
         List<Card> cards = cardRepository.findAll();
+        initializeDeck();
         return cardMapper.toDTOList(cards);
     }
 

@@ -1,0 +1,29 @@
+<div class="scores">
+    <h3>Scores:</h3>
+    <p>Player: {{ playerScore }}</p>
+    <p>Computer: {{ computerScore }}</p>
+</div>
+
+<div class="battle-result" *ngIf="battleResult">
+    <h2>{{ battleResult }}</h2>
+</div>
+
+<div class="battle-cards" *ngIf="playerCard && computerCard">
+    <div class="player-card">
+        <h3>You</h3>
+        <app-card [card]="playerCard"></app-card>
+    </div>
+    <div class="computer-card">
+        <h3>Computer</h3>
+        <app-card [card]="computerCard"></app-card>
+    </div>
+</div>
+
+<div class="actions">
+    <button mat-button (click)="startBattle()" [disabled]="battleInProgress">
+        Start Battle
+    </button>
+    <button mat-button (click)="startBattle()" [disabled]="!battleResult || battleInProgress">
+        Play Again
+    </button>
+</div>

@@ -4,7 +4,6 @@
 Ce projet est une application Spring Boot permettant de gérer un jeu de cartes. L'objectif est de créer, manipuler, et afficher un jeu de cartes (52 cartes réparties en 4 couleurs). Une version simplifiée du jeu de bataille est également implémentée.
 ### Objectifs :
 * Initialiser et afficher un jeu de cartes complet.
-* Stocker les cartes dans une base de données (H2 en mémoire).
 * Créer une API REST pour gérer les cartes et jouer au jeu.
 * Ajouter une interface web pour afficher les cartes ou jouer en ligne.
 ### ⚙ Prérequis
@@ -25,13 +24,7 @@ Git pour cloner le projet.
    mvn clean install
    mvn spring-boot:run
    ```
-3. Accéder à l'API URL de base : http://localhost:8080
-   Console H2 (base mémoire) :
-   URL : http://localhost:8080/h2-console
-   JDBC URL : jdbc:h2:mem:bpifrance_db
-   Username : sa
-   Password : (laisser vide)
-4. Accéder au swagger de l'API : http://localhost:8080/swagger-ui/
+3. Accéder au swagger de l'API : http://localhost:8080/swagger-ui/
 
 ## 🛠 Architecture du projet
 
@@ -59,7 +52,7 @@ src/
 Projet développé par Raphael SMADJA dans le cadre d’un exercice technique.
 
 ## 📜 Licence
-Ce projet est pour NatSystem
+Ce projet est KaizenCode
 
 ## 📧 Contact
 Si vous avez des questions, n'hésitez pas à me contacter :
